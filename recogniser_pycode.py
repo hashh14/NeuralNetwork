@@ -18,17 +18,17 @@ class nn:
         return 1/(1+np.exp(-(x/10**5)))
     
     def train(self):
-        #===front propogation===#
+        #forward propogation
         ip=np.append(np.ones((len(self.ip),1)),self.ip,axis=1)
         l1=self.sig((ip@self.w1)/100)
         l1=np.append(np.ones((len(l1),1)),l1,axis=1)
         pred=self.sig((l1@self.w2)/100)*100
-        #===back propogation===#
+        #backward propogation
         #error at each layer
         d3 = (pred - self.op)
         d2 = (d3 @ self.w2.T * l1 * (1-l1))
         d2 = d2[:,1:]
-        #altering weights
+        #weight altering
         self.w2-= (l1.T @ d3)/len(ip)
         self.w1-= (ip.T @ d2)/len(ip)
         
